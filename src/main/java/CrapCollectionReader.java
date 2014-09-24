@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -20,10 +22,14 @@ public class CrapCollectionReader extends CollectionReader_ImplBase {
   @Override
   public void initialize() throws ResourceInitializationException {
     try {
-      sc = new Scanner(new BufferedReader(new FileReader(
-              (String) getConfigParameterValue("ShitString"))));
-    } catch (FileNotFoundException e) {
+      sc = new Scanner(new BufferedReader(new FileReader(URLDecoder.decode(getClass().getResource((String) getConfigParameterValue("ShitString")).getFile(), "UTF-8"))));
+    } catch (Exception e){
       e.printStackTrace();
+      try {
+        Thread.sleep(10000);
+      } catch (InterruptedException e1) {
+        e1.printStackTrace();
+      }
     }
 
     super.initialize();

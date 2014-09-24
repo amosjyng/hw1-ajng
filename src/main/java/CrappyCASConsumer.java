@@ -1,8 +1,12 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.Scanner;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -21,6 +25,7 @@ public class CrappyCASConsumer extends CasConsumer_ImplBase {
   public void initialize() throws ResourceInitializationException {
     try {
       bw = new BufferedWriter(new FileWriter((String) getConfigParameterValue("outputFilename")));
+
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -35,8 +40,10 @@ public class CrappyCASConsumer extends CasConsumer_ImplBase {
       FSIterator<TOP> it = jacass.getJFSIndexRepository().getAllIndexedFS(NamedEntityAnnotation.type);
       while (it.hasNext()) {
         NamedEntityAnnotation nea = ((NamedEntityAnnotation) it.get());
-        bw.write(id + "|" + nea.getBegin() + " " + nea.getEnd() + "|" + nea.getNamedEntity());
+        bw.write(id + "|" + nea.getBegin() + " " + nea.getEnd() + "|" + nea.getNamedEntity() + "\n");
+        it.next();
       }
+      bw.flush();
     } catch (CASException e) {
       e.printStackTrace();
     } catch (IOException e) {

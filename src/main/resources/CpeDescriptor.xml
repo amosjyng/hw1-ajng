@@ -6,38 +6,16 @@
             </descriptor>
         </collectionIterator>
     </collectionReader>
-    <casProcessors casPoolSize="3" processingUnitThreadCount="1">
-        <casProcessor deployment="integrated" name="FeatureExtractorDescriptor">
+    <casProcessors casPoolSize="1" processingUnitThreadCount="1">
+        <casProcessor deployment="integrated" name="AEDescriptor">
             <descriptor>
-                <import location="PipelineDescriptor.xml"/>
+                <import location="aeDescriptor.xml"/>
             </descriptor>
-            <deploymentParameters/>
-            <errorHandling>
-                <errorRateThreshold action="terminate" value="0/1000"/>
-                <maxConsecutiveRestarts action="terminate" value="30"/>
-                <timeout max="100000" default="-1"/>
-            </errorHandling>
-            <checkpoint batch="10000" time="1000ms"/>
         </casProcessor>
-        <casProcessor deployment="integrated" name="Annotation Printer">
+        <casProcessor deployment="integrated" name="ConsumeristDescriptor">
             <descriptor>
-                <import location="casConsumerDescriptor"/>
+                <import location="casConsumerDescriptor.xml"/>
             </descriptor>
-            <deploymentParameters/>
-            <errorHandling>
-                <errorRateThreshold action="terminate" value="0/1000"/>
-                <maxConsecutiveRestarts action="terminate" value="30"/>
-                <timeout max="100000" default="-1"/>
-            </errorHandling>
-            <checkpoint batch="10000" time="1000ms"/>
-            <configurationParameterSettings>
-                <nameValuePair>
-                    <name>outputFile</name>
-                    <value>
-                        <string>hw1-ajng.out</string>
-                    </value>
-                </nameValuePair>
-            </configurationParameterSettings>
         </casProcessor>
     </casProcessors>
     <cpeConfig>

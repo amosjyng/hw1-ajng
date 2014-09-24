@@ -1,5 +1,9 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.Scanner;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -18,7 +22,7 @@ public class JaCasAnnotator extends JCasAnnotator_ImplBase {
   public void initialize(org.apache.uima.UimaContext aContext)
           throws org.apache.uima.resource.ResourceInitializationException {
     try {
-      chunker = (Chunker) AbstractExternalizable.readObject(new File(this.getClass().getClassLoader().getResource((String) aContext.getConfigParameterValue("GenesFilename")).getFile()));
+      chunker = (Chunker) AbstractExternalizable.readObject(new File(URLDecoder.decode(getClass().getResource((String) aContext.getConfigParameterValue("GenesFilename")).getFile(), "UTF-8")));
     } catch (Exception e) {
       e.printStackTrace();
     }
