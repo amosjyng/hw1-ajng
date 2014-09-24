@@ -11,42 +11,36 @@ import com.aliasi.chunk.Chunker;
 import com.aliasi.chunk.Chunking;
 import com.aliasi.util.AbstractExternalizable;
 
+public class JaCasAnnotator extends JCasAnnotator_ImplBase {
+  Chunker chunker;
 
-public class JaCasAnnotator extends JCasAnnotator_ImplBase
-{
-    Chunker chunker;
-    
-    @Override
-    public void initialize(org.apache.uima.UimaContext aContext) throws org.apache.uima.resource.ResourceInitializationException
-    {
-        try
-        {
-            chunker = (Chunker) AbstractExternalizable.readObject(new File((String) aContext.getConfigParameterValue("GenesFilename")));
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+  @Override
+  public void initialize(org.apache.uima.UimaContext aContext)
+          throws org.apache.uima.resource.ResourceInitializationException {
+    try {
+      chunker = (Chunker) AbstractExternalizable.readObject(new File((String) aContext
+              .getConfigParameterValue("GenesFilename")));
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    
-    private static int countSpaces(String str, int until)
-    {
-        return StringUtils.countMatches(str.substring(0, until), " ");
+
+    super.initialize(aContext);
+  }
+
+  private static int countSpaces(String str, int until) {
+    return StringUtils.countMatches(str.substring(0, until), " ");
+  }
+
+  @Override
+  public void process(JCas arg0) throws AnalysisEngineProcessException {
+    String docText = arg0.getDocumentText();
+    for (Chunk chunk : chunker.chunk(docText).chunkSet()) {
+      NamedEntityAnnotation nea = new NamedEntityAnnotation(arg0);
+      nea.setBegin(chunk.start() - countSpaces(docText, chunk.start()));
+      nea.setEnd(chunk.end() - countSpaces(docText, chunk.end()) - 1);
+      nea.setNamedEntity(docText.substring(chunk.start(), chunk.end()));
+      nea.addToIndexes();
     }
-    
-    @Override
-    public void process(JCas arg0) throws AnalysisEngineProcessException
-    {
-        chunker.chunk(arg0.getDocumentText());
-        String docText = arg0.getDocumentText();
-        for (Chunk chunk : chunker.chunk(docText).chunkSet())
-        {
-            NamedEntityAnnotation nea = new NamedEntityAnnotation(arg0);
-            nea.setBegin(chunk.start() - countSpaces(docText, chunk.start()));
-            nea.setEnd(chunk.end() - countSpaces(docText, chunk.end()) - 1);
-            nea.setNamedEntity(docText.substring(chunk.start(), chunk.end()));
-            nea.addToIndexes();
-        }
-    }
-    
+  }
+
 }
