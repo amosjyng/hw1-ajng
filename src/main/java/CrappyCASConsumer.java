@@ -17,10 +17,20 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
 
-
+/**
+ * Consumes CAS to write each recognized gene to an output file
+ * @author Amos Ng
+ *
+ */
 public class CrappyCASConsumer extends CasConsumer_ImplBase {
+  /**
+   * Writes out stuff to output file
+   */
   private BufferedWriter bw;
   
+  /**
+   * Open output file for writing
+   */
   @Override
   public void initialize() throws ResourceInitializationException {
     try {
@@ -32,6 +42,10 @@ public class CrappyCASConsumer extends CasConsumer_ImplBase {
     super.initialize();
   }
 
+  /**
+   * Write out all the recognized genes, along with string locations, and sentence ID
+   * @param arg0 CAS containing all the recognized genes for a certain sentence
+   */
   @Override
   public void processCas(CAS arg0) throws ResourceProcessException {
     try {

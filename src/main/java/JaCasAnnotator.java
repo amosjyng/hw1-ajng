@@ -15,9 +15,20 @@ import com.aliasi.chunk.Chunker;
 import com.aliasi.chunk.Chunking;
 import com.aliasi.util.AbstractExternalizable;
 
+/**
+ * Jackass that recognizes genes inside a sentence's text
+ * @author Amos Ng
+ *
+ */
 public class JaCasAnnotator extends JCasAnnotator_ImplBase {
+  /**
+   * The chunker that, given a gene model file, chunks the sentence into chunks of genes
+   */
   Chunker chunker;
 
+  /**
+   * Load up the gene model file
+   */
   @Override
   public void initialize(org.apache.uima.UimaContext aContext)
           throws org.apache.uima.resource.ResourceInitializationException {
@@ -30,10 +41,19 @@ public class JaCasAnnotator extends JCasAnnotator_ImplBase {
     super.initialize(aContext);
   }
 
+  /**
+   * Find the number of spaces in a string until a given index
+   * @param str The string whose spaces are to be counted
+   * @param until Until where in the string you count spaces
+   * @return Number of spaces in a string until the given index
+   */
   private static int countSpaces(String str, int until) {
     return StringUtils.countMatches(str.substring(0, until), " ");
   }
 
+  /**
+   * Find all gene names in the sentence contained in the given CAS
+   */
   @Override
   public void process(JCas arg0) throws AnalysisEngineProcessException {
     String docText = arg0.getDocumentText();

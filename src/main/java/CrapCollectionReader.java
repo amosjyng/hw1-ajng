@@ -16,9 +16,20 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.Progress;
 
+/**
+ * Collect sentences from input document and put them into a CAS each
+ * @author Amos Ng
+ *
+ */
 public class CrapCollectionReader extends CollectionReader_ImplBase {
+  /**
+   * Scanner to read in input file line by line
+   */
   private Scanner sc;
 
+  /**
+   * Open input file and initialize the Scanner
+   */
   @Override
   public void initialize() throws ResourceInitializationException {
     try {
@@ -35,6 +46,10 @@ public class CrapCollectionReader extends CollectionReader_ImplBase {
     super.initialize();
   }
 
+  /**
+   * Populated next CAS with next sentence
+   * @param arg0 Populate this with sentence ID and sentence text of the next sentence
+   */
   @Override
   public void getNext(CAS arg0) throws IOException, CollectionException {
     String[] shits = sc.nextLine().split(" ", 2);
@@ -49,17 +64,26 @@ public class CrapCollectionReader extends CollectionReader_ImplBase {
     }
   }
 
+  /**
+   * Close input file when collection reader is closed
+   */
   @Override
   public void close() throws IOException {
     sc.close();
   }
 
+  /**
+   * Return the progress so far. Useless.
+   */
   @Override
   public Progress[] getProgress() {
     // TODO Auto-generated method stub
     return null;
   }
 
+  /**
+   * See if there is more to read.
+   */
   @Override
   public boolean hasNext() throws IOException, CollectionException {
     return sc.hasNext();
