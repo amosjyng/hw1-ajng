@@ -18,8 +18,7 @@ public class JaCasAnnotator extends JCasAnnotator_ImplBase {
   public void initialize(org.apache.uima.UimaContext aContext)
           throws org.apache.uima.resource.ResourceInitializationException {
     try {
-      chunker = (Chunker) AbstractExternalizable.readObject(new File((String) aContext
-              .getConfigParameterValue("GenesFilename")));
+      chunker = (Chunker) AbstractExternalizable.readObject(new File(this.getClass().getClassLoader().getResource((String) aContext.getConfigParameterValue("GenesFilename")).getFile()));
     } catch (Exception e) {
       e.printStackTrace();
     }

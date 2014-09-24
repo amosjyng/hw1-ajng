@@ -24,7 +24,11 @@
         </value>
       </nameValuePair>
     </configurationParameterSettings>
-    <typeSystemDescription/>
+    <typeSystemDescription>
+      <imports>
+        <import name="typeSystemDescriptor"/>
+      </imports>
+    </typeSystemDescription>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
